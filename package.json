@@ -23,7 +23,9 @@
     "lodash.template": "^3.3.0",
     "moment": "^2.9.0",
     "object-assign": "^2.0.0",
-    "prequest": "0.0.3",
+    "prequest": "0.0.3"
+  },
+  "devDependencies": {
     "tap": "^0.7.1"
   }
 }
