@@ -92,6 +92,12 @@ getArtistEventList = function(name, date) {
 };
 
 bandsInTownAPI = function(options) {
+  if (String(options) === options) {
+    options = {
+      appId: options
+    };
+  }
+
   options = objectAssign({
     apiVersion: '2.0'
   }, options);
