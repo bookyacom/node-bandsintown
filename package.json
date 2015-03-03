@@ -1,0 +1,30 @@
+{
+  "name": "bandsintown",
+  "version": "1.0.0",
+  "description": "Bands In Town API Wrapper",
+  "main": "index.js",
+  "scripts": {
+    "jshint": "jshint index.js",
+    "pretest": "npm run jshint",
+    "test": "node test"
+  },
+  "keywords": [
+    "bandsintown",
+    "api",
+    "artist",
+    "events",
+    "gigs",
+    "shows",
+    "entertainment"
+  ],
+  "author": "Yu Jin",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.1.2",
+    "lodash.template": "^3.3.0",
+    "moment": "^2.9.0",
+    "object-assign": "^2.0.0",
+    "prequest": "0.0.3",
+    "tap": "^0.7.1"
+  }
+}
