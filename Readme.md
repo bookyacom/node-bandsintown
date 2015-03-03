@@ -23,15 +23,25 @@ bandsintown
 Type: `String`  
 BandsInTown App ID
 
+## `getArtist(artistName, dates)`
+> query list of events by artist name
+
+### artistName
+Type: `String`  
+Artist's name
+
 ## `getArtistEventList(artistName, dates)`
 > query list of events by artist name
 
 ### artistName
 Type: `String`  
-Artist name
+Artist's name
 
 ### dates
 Type: `String`  
 Documentation: `yyyy-mm-dd, (yyyy-mm-dd,yyyy-mm-dd) (inclusive range), upcoming all`  
 A date, or date range to get all events. if you need all events from past and future, pass `all`
 default to only getting future events
+
+## License
+MIT © [BookYa](https://github.com/bookya)
