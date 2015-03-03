@@ -8,30 +8,19 @@ var prequest     = require('prequest');
 var objectAssign = require('object-assign');
 var template     = require('lodash.template');
 
-var DATE_FORMAT  = 'YYYY-MM-DD';
-var BASE_URL     = 'http://api.bandsintown.com/artists/';
+var DATE_FORMAT       = 'YYYY-MM-DD';
+var BASE_URL          = 'http://api.bandsintown.com/artists/';
+
 var artistEventAction = template('<%= name %>/events');
+var url               = template(BASE_URL + '<%= action %>.json');
 
-var BandsInTownAPI = function(options) {
-  options = objectAssign({
-    apiVersion: '2.0'
-  }, options);
+var defaultParams      = null;
+var getArtist          = null;
+var getArtistEventList = null;
+var bandsInTownAPI     = null;
 
-  debug(options);
-
-  assert(options.appId, 'app id should not be null');
-
-  this.appId = options.appId;
-  this.apiVersion = options.apiVersion;
-  this.defaultParams = {
-    app_id: this.appId,
-    api_version: this.apiVersion
-  };
-
-  this.url = template(BASE_URL + '<%= action %>.json');
-
-  this.request = function(action, params) {
-    var api = this.url({
+var request = function(action, params) {
+   var api = url({
       action: action
     });
 
@@ -42,59 +31,87 @@ var BandsInTownAPI = function(options) {
       method: 'GET'
     });
 
-    params.qs = objectAssign(params.qs || {}, this.defaultParams);
+    params.qs = objectAssign(params.qs || {}, defaultParams);
 
     return prequest(params);
+};
+
+/**
+ * Get artist info
+ * @param  {String} artistName    artist name (url escaped*), mbid_<id>(MusicBrainz ID),fbid_<id>(Facebook Page ID)
+ * @return {Object}               Artist information
+ */
+getArtist = function(artistName) {
+  return request(artistName)
+    .catch(function(err) {
+      debug(err);
+      throw err;
+    });
+};
+
+/**
+  * Get all events by artist, by default get future events
+  * @param  {String} name   artist name (url escaped*), mbid_<id>(MusicBrainz ID),fbid_<id>(Facebook Page ID)
+  * @param  {String} date   yyyy-mm-dd, (yyyy-mm-dd,yyyy-mm-dd) (inclusive range), upcoming all
+  * @return {Array}         Array of events
+*/
+getArtistEventList = function(name, date) {
+  var action = artistEventAction({
+    name: name
+  });
+
+  // get all events past and futures
+  var params = {
+    qs: {
+      date: moment().format(DATE_FORMAT)
+    }
   };
 
-  this.getArtist = function(artistName) {
-    return this.request(artistName)
-      .catch(function(err) {
-        debug(err);
-        throw err;
-      });
-  };
+  debug(params.qs.date);
 
-  /**
-   * Get all events by artist, by default get future events
-   * @param  {String} name [artist name (url escaped*), mbid_<id>(MusicBrainz ID),fbid_<id>(Facebook Page ID)]
-   * @param  {String} date [yyyy-mm-dd, (yyyy-mm-dd,yyyy-mm-dd) (inclusive range), upcoming all]
-   * @return {Array}      [Array of events]
-   */
-  this.getArtistEvents = function(name, date) {
-    var action = artistEventAction({
-      name: name
+  if (date) {
+    var dates = date.split(',');
+    dates = dates.map(dates, function(date) {
+      return moment(date).format(DATE_FORMAT);
     });
 
-    // get all events past and futures
-    var params = {
-      qs: {
-        date: moment().format(DATE_FORMAT)
-      }
+    debug(dates);
+
+    date = dates.join(',');
+
+    params.qs = {
+      date: date
     };
+  }
 
-    debug(params.qs.date);
+  return request(action, params)
+    .catch(function(err) {
+      debug(err);
+      throw err;
+    });
+};
 
-    if (date) {
-      var dates = date.split(',');
-      dates = dates.map(dates, function(date) {
-        return moment(date).format(DATE_FORMAT);
-      });
+bandsInTownAPI = function(options) {
+  options = objectAssign({
+    apiVersion: '2.0'
+  }, options);
 
-      debug(dates);
+  debug(options);
 
-      date = dates.join(',');
+  assert(options.appId, 'app id should not be null');
 
-      params.qs = {
-        date: date
-      };
-    }
+  var appId = options.appId;
+  var apiVersion = options.apiVersion;
+  
+  defaultParams = {
+    app_id: appId,
+    api_version: apiVersion
+  };
 
-    return this.request(action, params)
-      .catch(function(err) {
-        debug(err);
-      });
+  return {
+    getArtist: getArtist,
+    getArtistEventList: getArtistEventList
   };
 };
 
-module.exports = BandsInTownAPI;
+module.exports = bandsInTownAPI;

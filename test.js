@@ -6,7 +6,7 @@ var API  = require('./');
 test('#BandsInTownAPIs', function(t) {
   t.test('get artist', function(st) {
     var artistName = 'Skrillex';
-    var api = new API({
+    var api = API({
       appId: 'bookya'
     });
 
@@ -20,7 +20,7 @@ test('#BandsInTownAPIs', function(t) {
     });
 
     st.test('get events', function(sbt) {
-      api.getArtistEvents(artistName)
+      api.getArtistEventList(artistName)
         .then(function(events) {
           sbt.equal(Array.isArray(events), true);
           sbt.end();
@@ -31,7 +31,7 @@ test('#BandsInTownAPIs', function(t) {
   t.test('return error if app id is not available', function(st) {
     st.throws(function() {
       try {
-        var api = new API();
+        var api = API();
       } catch (e) {
         throw new Error(e.message);
       }
