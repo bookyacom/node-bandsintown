@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "jshint": "jshint index.js",
+    "pretest": "npm run jshint",
     "test": "node test"
   },
   "keywords": [
@@ -29,10 +30,10 @@
     "tap": "^0.7.1"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/bookyacom/node-bandsintown/issues"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:bookyacom/node-bandsintown.git"
   }
 }
