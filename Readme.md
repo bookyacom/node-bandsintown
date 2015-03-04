@@ -23,8 +23,8 @@ bandsintown
 Type: `String`  
 BandsInTown App ID
 
-## `getArtist(artistName, dates)`
-> query list of events by artist name
+## `getArtist(artistName)`
+> query artist information from bandsintown API with artist name
 
 ### artistName
 Type: `String`  
