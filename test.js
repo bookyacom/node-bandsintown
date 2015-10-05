@@ -26,6 +26,14 @@ test('#BandsInTownAPIs', function(t) {
           sbt.end();
         });
     });
+
+    st.test('get events with all', function(sbt) {
+      api.getArtistEventList(artistName, 'all')
+        .then(function(events) {
+          sbt.equal(Array.isArray(events), true);
+          sbt.end();
+        });
+    });
   });
 
   t.test('return error if app id is not available', function(st) {

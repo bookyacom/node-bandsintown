@@ -62,22 +62,22 @@ getArtistEventList = function(name, date) {
 
   // get all events past and futures
   var params = {
-    qs: {
-      date: moment().format(DATE_FORMAT)
-    }
+    qs: {}
   };
 
   debug(params.qs.date);
 
   if (date) {
     var dates = date.split(',');
-    dates = dates.map(dates, function(date) {
-      return moment(date).format(DATE_FORMAT);
-    });
+    if (dates.length === 2) {
+      dates = dates.map(dates, function(date) {
+        return moment(date).format(DATE_FORMAT);
+      });
 
-    debug(dates);
+      debug(dates);
 
-    date = dates.join(',');
+      date = dates.join(',');
+    }
 
     params.qs = {
       date: date
@@ -108,7 +108,7 @@ bandsInTownAPI = function(options) {
 
   var appId = options.appId;
   var apiVersion = options.apiVersion;
-  
+
   defaultParams = {
     app_id: appId,
     api_version: apiVersion
