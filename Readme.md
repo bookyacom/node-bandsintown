@@ -1,4 +1,4 @@
-# Bands In Town Nodejs API Library
+# Bands In Town Nodejs API Library [![Dependency Status](https://gemnasium.com/badges/github.com/bookyacom/node-bandsintown.svg)](https://gemnasium.com/github.com/bookyacom/node-bandsintown)
 > Bands In Town Artist API Wrapper, http://www.bandsintown.com/api/overview
 
 ## Installation
